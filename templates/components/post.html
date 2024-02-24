@@ -1,0 +1,60 @@
+<article class="post grid jcs aic g30">
+  <div class="flex jcsb aic g30">
+    <div class="post_user flex jcfs aic g10">
+      <img
+        src="{{ url_for('static', filename='images/profile-user.png') }}"
+        alt="post_user"
+      />
+      <div class="post_data grid jcfs aic">
+        <div class="flex jcfs aic g10 user_name_and_role">
+          <span>
+            <a href="http://localhost:5000/profile/{{post.user_id}}">
+              {{post.username}}
+            </a>
+          </span>
+          {% if post.admin == "1" %}
+          <img
+            src="{{ url_for('static', filename='images/admin.png') }}"
+            alt="role"
+          />
+          {% else %}
+          <img
+            src="{{ url_for('static', filename='images/user.png') }}"
+            alt="role"
+          />
+          {% endif %}
+        </div>
+        <span>
+          {% set date_parts = post.date.split('_') %} {% set date =
+          date_parts[0] %} {% set time = date_parts[1] %} {{ date | replace("-",
+          " ") }} at {{ time | replace("-", ":") }}
+        </span>
+      </div>
+    </div>
+    <div class="grid jcfe aic g5">
+     
+      {% if session["admin"] == "1" or session["user_id"] == post.user_id %}
+      <form method="post" action="/" style="padding: 0" class="flex jcfe aic">
+        <input
+          type="hidden"
+          id="post_id"
+          name="post_id"
+          value="{{post.post_id}}"
+        />
+        <button class="delete_button" type="submit">Delete</button>
+      </form>
+      {%endif%}
+    </div>
+  </div>
+  <div class="post_content grid jcs aic g20">
+    <p class="post_description">{{post.description}}</p>
+    <img
+      class="post_image"
+      src="data:image/{{post.image_ext}};base64, {{ post.image_data }}"
+      alt="Post Image"
+    />
+    <button class="form_button">
+      <a href="/display_post/{{post.post_id}}">View</a>
+    </button>
+  </div>
+</article>

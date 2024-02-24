@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="login-section">
+  <div class="contain grid jcs aic g20">
+    <!--{% set title = "Login in to LINKUP!" %}
+    {% include './components/head.html' %}-->
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h3 class="animate-charcter"> Login to LINKUP</h3>
+        </div>
+      </div>
+    </div>
+    <form method="post" action="/login" class="login-form grid jcs aic g30">
+      <div class="form_box grid jcs aic g5">
+        <label for="username" class="form_label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          required
+        />
+      </div>
+      <div class="form_box grid jcs aic g5">
+        <label for="password" class="form_label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          required
+        />
+      </div>
+      <button type="submit" class="form_button center_x">LOG IN</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

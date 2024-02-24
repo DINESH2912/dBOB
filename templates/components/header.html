@@ -1,0 +1,69 @@
+<header>
+    <div class="contain flex jcsb aic g30">
+        <a href="/">
+            <div class="flex jcfs aic g10 logo">
+                <img src="{{ url_for('static', filename='images/connect.png') }}" alt="logo" > 
+                <span>LINKUP</span>
+            </div>
+        </a>
+        <ul class="flex jcfe aic g50">
+            <li>
+                <a href="/">Home</a>
+            </li>
+            {%if session.logged_in %}
+                <li>
+                    <a href="/profile/{{session["user_id"]}}"+"">Profile</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}">
+                        Log Out
+                    </a>
+                </li>
+                <button  class="flex jcc aic search_icon" id="search_button">
+                    <img src="{{ url_for('static', filename='images/search.png') }}" alt="search"/>
+                </button>
+            {% endif %}
+            {%if not session.logged_in %}
+                <li>
+                    <a href="/login">Log In</a>
+                </li>
+                <li>
+                    <a href="/register">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+        <form
+            method="post"
+            action="/"
+            class="flex jcs aic g10 search_form"
+            id="search_form"
+        >
+         
+            <input
+                type="search"
+                class="formss-control"
+                id="username"
+                name="username"
+                placeholder="search for user..."
+                required
+            />
+            
+            <button type="submit" class="form_buttonss">Search</button>
+        </form>
+    </div>
+</header>
+<script>
+    const search = document.getElementById("search_button")
+    const searchFrom = document.getElementById("search_form")
+    search.addEventListener("click",()=>{
+        searchFrom.classList.toggle("active")
+    })
+    window.addEventListener("click",(e)=>{
+        if (! (e.target.type === "search" || e.target.id === "search_form" || e.target.id === "search_button" || e.target.alt === "search")){
+            searchFrom.classList.remove("active")
+        }
+    })
+</script>
+
+    
+

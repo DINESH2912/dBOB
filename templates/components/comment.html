@@ -1,0 +1,47 @@
+<div class="comment grid jcs aic g10">
+  <div class="flex jcsb aic g30">
+    <div class="comment_user flex jcfs aic g10">
+      <img
+        src="{{ url_for('static', filename='images/profile-user.png') }}"
+        alt="post_user"
+      />
+      <div class="post_data grid jcfs aic">
+        <div class="flex jcfs aic g10 user_name_and_role_for_comment">
+          <span>
+            <a href="http://localhost:5000/profile/{{comment.user_id}}">
+              {{comment.username}}
+            </a>
+          </span>
+          {% if comment.admin == "1" %}
+          <img
+            src="{{ url_for('static', filename='images/admin.png') }}"
+            alt="role"
+          />
+          {% else %}
+          <img
+            src="{{ url_for('static', filename='images/user.png') }}"
+            alt="role"
+          />
+          {% endif %}
+        </div>
+        <span>{{comment.date}}</span>
+      </div>
+    </div>
+    {% if session["admin"] == "1" or session["user_id"] == comment.user_id %}
+    <form
+      method="post"
+      action="/display_post/{{post.post_id}}"
+      style="padding: 0"
+    >
+      <input
+        type="hidden"
+        id="comment_id"
+        name="comment_id"
+        value="{{comment.id}}"
+      />
+      <button class="delete_button" type="submit">Delete</button>
+    </form>
+    {%endif%}
+  </div>
+  <p>{{comment.comment}}</p>
+</div>

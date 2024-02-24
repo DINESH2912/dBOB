@@ -1,0 +1,31 @@
+<article class="custom-posts grid-container justify-center align-center gap-30">
+    <div class="post-details-container flex-container justify-between align-center gap-30">
+        <div class="user-info-container flex-container align-center gap-10">
+            <img src="{{ url_for('static', filename='images/profile-user.png') }}" alt="post_user" class="user-avatar" />
+            <div class="post-details grid-container justify-center align-center">
+                <div class="user-role-container flex-container align-center gap-10">
+              
+                        <a href="http://localhost:5000/profile/{{post.user_id}}">{{post.username}}</a>
+                </div>
+                <span class="posta-date">
+                    {% set date_parts = post.date.split('_') %}
+                    {% set date = date_parts[0] %}
+                    {% set time = date_parts[1] %}
+                    {{ date | replace("-", " ") }} at {{ time | replace("-", ":") }}
+                </span>
+            </div>
+        </div>
+        <div class="post-actions-container grid-container justify-end align-center gap-5">
+            {% if session["admin"] == "1" or session["user_id"] == post.user_id %}
+            <form method="post" action="/" class="delete-form flex-container justify-end align-center" style="padding: 0">
+                <input type="hidden" id="post_id" name="post_id" value="{{post.post_id}}" />
+                <button class="delete-button" type="submit">Delete</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="post-content-container grid-container justify-center align-center gap-20">
+        <p class="post-description">{{post.description}}</p>
+        <img class="post-image" src="data:image/{{post.image_ext}};base64, {{ post.image_data }}" alt="Post Image" />
+    </div>
+</article>

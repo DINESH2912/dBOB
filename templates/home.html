@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="posts-section dark-mode">
+
+
+
+  
+ 
+  <div class="containers" style="margin-top: 10px;"> <!-- Adjust margin-top as needed -->
+  
+
+    <div class="row">
+     
+      <div class="col-md-7 col-md-offset-1">
+        
+        <div class="home_box">
+          
+          {% if posts|length == 0 %}
+          <div class="no_post_text">No Posts Yet...</div>
+          {% endif %} 
+          <div class="posts-container">
+            {% for post in posts|reverse %}
+              {% include './components/post.html' %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <div class="container content-right">
+    <form method="post" class="add_post_form" action="/" enctype="multipart/form-data">
+      <div class="form_box">
+        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Share your thoughts..." required></textarea>
+      </div>
+      <div class="form_box">
+        <label for="image" class="add_image_label">
+          <img src="{{ url_for('static', filename='images/add_image.png') }}" alt="add post_image" />
+        </label>
+        <div class="chosen_image">
+          <span id="image_name"></span>
+          <button type="button" id="close_button">
+            <img src="{{ url_for('static', filename='images/close.png') }}" alt="close" />
+          </button>
+        </div>
+        <input type="file" class="upload_image_input" id="image" name="image" accept=".jpg, .jpeg, .png , .gif" required />
+      </div>
+      <button type="submit" class="form_button">Add Post</button>
+    </form>
+  </div>
+  
+</section>
+
+
+
+
+
+
+<script>
+  const imageName = document.getElementById("image_name");
+  const closeButton = document.getElementById("close_button");
+  const fileInput = document.getElementById("image");
+  const imageNameBox = document.querySelector(".chosen_image");
+  fileInput.addEventListener("change", () => {
+    if (fileInput.value) {
+      const fileName = fileInput.files[0].name;
+      imageName.innerHTML = fileName;
+      imageNameBox.classList.add("active");
+    } else {
+      imageNameBox.classList.remove("active");
+    }
+  });
+  closeButton.addEventListener("click", () => {
+    fileInput.value = null;
+    imageName.innerHTML = "";
+    imageNameBox.classList.remove("active");
+  });
+</script>
+{% endblock %}

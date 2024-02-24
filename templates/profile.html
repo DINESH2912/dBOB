@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="dark-theme grid jcs aic g60 profile">
+  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;
+  <div class="profile_cover"></div>
+
+  <div class="user_info grid jcc aic g10 center_x">
+   
+    <img 
+ 
+      src="{{ url_for('static', filename='images/profile-user.png') }}"
+      alt="post_user"
+    />
+    <div class="flex jcc aic user_name">{{user.username}}</div>
+  </div>
+  <div class="contain grid jcs aic g50">
+    {% set title = "Posts" %}
+    {% include './components/head.html' %}
+    {% if user.posts|length == 0 %}
+    <div class="flex jcc aic no_post_text">No Posts Yet...</div>
+    {% endif %}
+    {% for post in user.posts|reverse %}
+    {% include './components/postss.html' %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
