@@ -128,6 +128,8 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        dob=request.form["dob"]
+        profile_photo=request.files["profile_photo"]
         if not utils.is_strong_password(password):
             flash(
                 "Sorry You Entered a weak Password Please Choose a stronger one",
@@ -139,8 +141,14 @@ def register():
 
         if not token:
             hashedPassword = utils.hash_password(password)
+
+            if profile_photo.filename:
+                profile_photo_data = profile_photo.read()
+            else:
+                profile_photo_data = None
+            
             db.add_user(
-                connection, username, hashedPassword
+                connection, username, hashedPassword,dob, profile_photo_data
             )  # if username in database already in database it will return an error to terminate the server
             session["username"] = username
             session["logged_in"] = False
@@ -185,6 +193,16 @@ def logout():
     session.pop("logged_in", None)
     flash("Logged Out Successfully!", "success")
     return redirect(url_for("login"))
+
+@app.route("/allusers")
+def all_users():
+    if session.get("logged_in"):
+        users = db.get_all_users(connection)
+        user_id = db.get_all_userid(connection)
+        return render_template("allusers.html", users=users,user_id=user_id)
+    else:
+        flash("Please log in to access this page.", "info")
+        return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
