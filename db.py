@@ -13,18 +13,24 @@ def init_users(connection):
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         username TEXT NOT NULL UNIQUE, 
         password TEXT NOT NULL,
-        admin TEXT NOT NULL
+        admin TEXT NOT NULL,
+        dob date,
+        profile_photo BLOB
         )   
         """
     )
 
     connection.commit()
 
-def add_user(connection, username, password):
+def add_user(connection, username, password,dob,profile_photo):
     cursor = connection.cursor()
-    query = "INSERT INTO users (username, password,admin) VALUES (?, ?,?)"
-    cursor.execute(query, (username, password,"0"))
+    query = "INSERT INTO users (username, password,admin,dob,profile_photo) VALUES (?, ?,?,?,?)"
+    cursor.execute(query, (username, password,"0",dob,profile_photo))
     connection.commit()
+
+
+
+    
 
 def get_user_by_username(connection, username):
     cursor = connection.cursor()
@@ -114,6 +120,14 @@ def get_all_posts(connection):
         posts.append(post)
     return posts
 
+def get_all_users(connection):
+    cursor = connection.cursor()
+    query = "SELECT username FROM users"
+    cursor.execute(query)
+    users = [row[0] for row in cursor.fetchall()]  # Extract usernames from the result
+    return users
+
+
 def get_post_by_post_id(connection, post_id):
     cursor = connection.cursor()
     query = "SELECT * FROM POSTS WHERE POST_ID = ?"
@@ -131,6 +145,14 @@ def get_post_by_post_id(connection, post_id):
             post["admin"] = user_row[3]
             post["username"] = user_row[1]
     return post
+
+def get_all_userid(connection):
+    cursor = connection.cursor()
+    query = "SELECT id FROM users"
+    cursor.execute(query)
+    user_ids = [row[0] for row in cursor.fetchall()]
+    return user_ids
+
 
 def delete_post_by_id(connection, post_id):
     cursor = connection.cursor()
